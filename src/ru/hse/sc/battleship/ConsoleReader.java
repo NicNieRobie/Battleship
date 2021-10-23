@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleReader {
+    static final Scanner scanner = new Scanner(System.in);
+
     public static String readInputFromOptions(List<String> options) {
-        var scanner = new Scanner(System.in);
         String input = scanner.nextLine();
 
         while (!options.contains(input)) {
-            System.err.println(ConsoleColorString.RED +
+            System.err.println(ConsoleANSICode.RED +
                     "ERROR: Invalid value! Please try again." +
-                    ConsoleColorString.RESET);
+                    ConsoleANSICode.RESET);
             input = scanner.nextLine();
         }
 
@@ -23,17 +24,14 @@ public class ConsoleReader {
         int input = 0;
 
         while(true) {
-            Scanner scanner = new Scanner(System.in);
-
             try {
                 System.out.print(inputPromptMessage + '\n');
                 input = scanner.nextInt();
-                scanner.close();
                 break;
             } catch (InputMismatchException notNumber) {
-                System.err.println(ConsoleColorString.RED +
+                System.err.println(ConsoleANSICode.RED +
                         "ERROR: Invalid value! Please try again." +
-                        ConsoleColorString.RESET);
+                        ConsoleANSICode.RESET);
             }
         }
 

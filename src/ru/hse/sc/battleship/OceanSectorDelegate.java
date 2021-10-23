@@ -9,7 +9,7 @@ public interface OceanSectorDelegate {
     }
 
     void setSectorContent(Ship ship);
-    void onSectorHit(boolean isTorpedoHit);
+    boolean onSectorHitSunk(boolean isTorpedoHit);
     boolean isAvailable();
     Character getSectorRepresentation();
 }

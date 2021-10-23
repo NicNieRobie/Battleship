@@ -1,6 +1,9 @@
 package ru.hse.sc.battleship;
 
+import java.util.List;
+
 public interface OceanDelegate {
-    public boolean tryToPlaceShipRandomly();
-    public boolean tryToInitOcean();
+    OceanSectorDelegate getOceanSector(int row, int col);
+    boolean onHitSunk(int row, int col);
+    void print();
 }

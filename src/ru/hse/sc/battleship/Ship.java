@@ -10,6 +10,11 @@ public abstract class Ship {
     }
 
     protected boolean onDamageSunk(boolean isTorpedoDamage) {
+        if (isSunk()) {
+            System.out.println("Ship already sunk!");
+            return false;
+        }
+
         healthPoints -= isTorpedoDamage ? healthPoints : 1;
 
         if (healthPoints == 0) {

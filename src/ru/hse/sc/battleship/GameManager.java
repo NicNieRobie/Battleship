@@ -7,19 +7,24 @@ public class GameManager implements GameManagerDelegate {
     Integer shipsNotSunk;
     Integer shotsFired;
 
-    private void tryToInitializeOcean() {
+    private boolean tryToInitializeGameOcean() {
         OceanDelegate ocean = null;
         boolean exitFlag = false;
-        var scanner = new Scanner(System.in);
 
         while (!exitFlag) {
             Integer[] oceanSize = readOceanSizeSettings();
             Integer[] shipCounts = readShipCountSettings();
-            ocean = initializeOcean(oceanSize, shipCounts);
+            ocean = Ocean.tryToInitOcean(oceanSize, shipCounts);
 
             if (!Objects.isNull(ocean)) {
                 this.ocean = ocean;
-                return;
+
+                shipsNotSunk = 0;
+                for(final int shipCount : shipCounts) {
+                    shipsNotSunk += shipCount;
+                }
+
+                return true;
             }
 
             System.out.println("Game could not be initialized with given settings.\n" +
@@ -36,16 +41,15 @@ public class GameManager implements GameManagerDelegate {
             }
         }
 
-        System.out.println(ConsoleColorString.YELLOW + "Shutting down. Goodbye!" + ConsoleColorString.RESET);
+        System.out.println(ConsoleANSICode.YELLOW + "Shutting down. Goodbye!" + ConsoleANSICode.RESET);
+        return false;
     }
 
     private Integer[] readOceanSizeSettings() {
-        var scanner = new Scanner(System.in);
-
         Integer[] oceanSize = new Integer[2];
         String[] dimensions = {"rows", "columms"};
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             String promptMessage = "Please enter the number of " + dimensions[i] + ":";
             oceanSize[i] = ConsoleReader.readInteger(promptMessage);
         }
@@ -60,23 +64,49 @@ public class GameManager implements GameManagerDelegate {
         String[] shipTypes = {"submarine", "destroyer", "cruiser", "battleship", "carrier"};
 
         for (int i = 0; i < 5; i++) {
-            String promptMessage = "Please enter the number of " + shipTypes[i] + ":";
+            String promptMessage = "Please enter the number of " + shipTypes[i] + "s:";
             shipCounts[i] = ConsoleReader.readInteger(promptMessage);
         }
 
         return shipCounts;
     }
 
-    public OceanDelegate initializeOcean(Integer[] oceanSize, Integer[] shipCounts) {
-        Ocean ocean = new Ocean();
-        ocean.
+    private void printCurrentSituation() {
+        System.out.println(ConsoleANSICode.CLEAR);
+        System.out.println("Shots fired: " + shotsFired);
+        System.out.println("---------------------------------------------\n\n");
+        ocean.print();
+        System.out.println("\n\n");
     }
 
-    public void printOcean() {
+    private Integer[] readUserCommand() {
+        int row = ConsoleReader.readInteger("Enter the row number: ");
+        int col = ConsoleReader.readInteger("Enter the column number: ");
 
+        return new Integer[]{row, col};
     }
 
     public void initializeGame() {
+        if (!tryToInitializeGameOcean()) {
+            return;
+        }
 
+        while (shipsNotSunk != 0) {
+            printCurrentSituation();
+            Integer[] shotCoords = readUserCommand();
+
+            System.out.println(ConsoleANSICode.CLEAR);
+
+            int shotRow = shotCoords[0];
+            int shotCol = shotCoords[1];
+
+            try {
+                if (ocean.onHitSunk(shotRow, shotCol)) {
+                    shipsNotSunk--;
+                }
+            } catch (Exception ex) {
+                System.err.println(ConsoleANSICode.RED + ex.getMessage() + ConsoleANSICode.RESET);
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 package ru.hse.sc.battleship;
 
-public enum ConsoleColorString {
+public enum ConsoleANSICode {
     RESET("\u001B[0m"),
     BLACK("\u001B[30m"),
     RED("\u001B[31m"),
@@ -9,23 +9,24 @@ public enum ConsoleColorString {
     BLUE("\u001B[34m"),
     PURPLE("\u001B[35m"),
     CYAN("\u001B[36m"),
-    WHITE("\u001B[37m")
+    WHITE("\u001B[37m"),
+    CLEAR("\033[H\033[2J")
     ;
 
-    private final String text;
+    private final String code;
 
     /**
-     * @param text
+     * @param code
      */
-    ConsoleColorString(final String text) {
-        this.text = text;
+    ConsoleANSICode(final String code) {
+        this.code = code;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Enum#toString()
      */
     @Override
     public String toString() {
-        return text;
+        return code;
     }
 }
