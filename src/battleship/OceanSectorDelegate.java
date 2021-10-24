@@ -1,4 +1,4 @@
-package ru.hse.sc.battleship;
+package battleship;
 
 public interface OceanSectorDelegate {
     enum SectorStatus {
@@ -9,6 +9,7 @@ public interface OceanSectorDelegate {
     }
 
     void setSectorContent(Ship ship);
+    void clearSectorContent();
     boolean onSectorHitSunk(boolean isTorpedoHit);
     boolean isAvailable();
     Character getSectorRepresentation();

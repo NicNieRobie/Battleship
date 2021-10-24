@@ -1,4 +1,4 @@
-package ru.hse.sc.battleship;
+package battleship;
 
 public class Submarine extends Ship {
     public Submarine() {

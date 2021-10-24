@@ -1,4 +1,4 @@
-package ru.hse.sc.battleship;
+package battleship;
 
 import java.util.Objects;
 
@@ -12,23 +12,33 @@ public class OceanSector implements OceanSectorDelegate {
     }
 
     @Override
+    public void clearSectorContent() {
+        this.ship = null;
+    }
+
+    @Override
     public boolean onSectorHitSunk(boolean isTorpedoHit) {
+        System.out.println("  ════════════════════════════════");
+        if (status == SectorStatus.FIRED_HIT || status == SectorStatus.FIRED_MISS) {
+            System.out.println("  Sector was already fired at!");
+            System.out.println("  ════════════════════════════════\n");
+            return false;
+        }
+
         if (isAvailable()) {
             status = SectorStatus.FIRED_MISS;
+            System.out.println("  Miss!");
+            System.out.println("  ════════════════════════════════\n");
             return false;
         } else {
-            if (status == SectorStatus.FIRED_HIT) {
-                System.out.println("Sector was already fired at!");
-                return false;
-            }
-
             boolean sunkOnHit = ship.onDamageSunk(isTorpedoHit);
+            System.out.println("  ════════════════════════════════\n");
+
             if (ship.isSunk()) {
                 status = SectorStatus.SUNK;
             } else {
                 status = SectorStatus.FIRED_HIT;
             }
-
             return sunkOnHit;
         }
     }
@@ -40,6 +50,10 @@ public class OceanSector implements OceanSectorDelegate {
 
     @Override
     public Character getSectorRepresentation() {
+        if (!Objects.isNull(ship) && ship.isSunk()) {
+            status = SectorStatus.SUNK;
+        }
+
         return switch (status) {
             case NOT_FIRED -> '~';
             case FIRED_MISS -> '.';

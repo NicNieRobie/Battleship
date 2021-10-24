@@ -1,4 +1,6 @@
-package ru.hse.sc.battleship;
+package battleship;
+
+import java.io.IOException;
 
 public class Main {
 

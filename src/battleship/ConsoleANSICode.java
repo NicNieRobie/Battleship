@@ -1,4 +1,4 @@
-package ru.hse.sc.battleship;
+package battleship;
 
 public enum ConsoleANSICode {
     RESET("\u001B[0m"),

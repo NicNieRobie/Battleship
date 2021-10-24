@@ -1,4 +1,4 @@
-package ru.hse.sc.battleship;
+package battleship;
 
 public abstract class Ship {
     protected String shipClass;
@@ -11,18 +11,18 @@ public abstract class Ship {
 
     protected boolean onDamageSunk(boolean isTorpedoDamage) {
         if (isSunk()) {
-            System.out.println("Ship already sunk!");
+            System.out.println("  Ship already sunk!");
             return false;
         }
 
         healthPoints -= isTorpedoDamage ? healthPoints : 1;
 
         if (healthPoints == 0) {
-            System.out.println("You just have sunk a " + shipClass + ".");
+            System.out.println("  You just have sunk a " + shipClass + ".");
             return true;
         }
 
-        System.out.println("Hit!");
+        System.out.println("  Hit!");
         return false;
     }
 }
