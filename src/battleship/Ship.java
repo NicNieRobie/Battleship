@@ -1,28 +1,62 @@
 package battleship;
 
+/**
+ * Base abstract class for the ship object logic.
+ */
 public abstract class Ship {
+    // Ship's class.
     protected String shipClass;
-    protected Integer shipSize;
-    protected Integer healthPoints;
+    // Ship's size.
+    protected int shipSize;
+    // Ship's HP.
+    protected int healthPoints;
 
-    protected boolean isSunk() {
+    /**
+     * Checks if the ship is sunk.
+     *
+     * @return boolean - true, if the ship is sunk.
+     */
+    public boolean isSunk() {
         return healthPoints == 0;
     }
 
-    protected boolean onDamageSunk(boolean isTorpedoDamage) {
+    /**
+     * Processes the event of ship being hit and checks
+     * if the hit sunk the ship.
+     *
+     * @param isTorpedoDamage flag of the damage being dealt
+     *                        by a torpedo
+     *
+     * @return boolean - true, if the ship has been sunk
+     */
+    public boolean onDamageSunk(boolean isTorpedoDamage) {
+        // Checking if the ship had already been sunk.
         if (isSunk()) {
-            System.out.println("  Ship already sunk!");
+            System.out.println("    Ship already sunk!");
             return false;
         }
 
+        // Calculating the damage.
         healthPoints -= isTorpedoDamage ? healthPoints : 1;
 
+        // If ship has been sunk.
         if (healthPoints == 0) {
-            System.out.println("  You just have sunk a " + shipClass + ".");
+            System.out.println("    You just have sunk a " + shipClass + ".");
             return true;
         }
 
-        System.out.println("  Hit!");
+        // If ship has not been sunk.
+        System.out.println("    Hit!");
         return false;
+    }
+
+    // Recovers the ship's HP.
+    public void recover() {
+        healthPoints = shipSize;
+    }
+
+    // Checks if damage was dealt to the ship.
+    public boolean isHit() {
+        return healthPoints != shipSize;
     }
 }
